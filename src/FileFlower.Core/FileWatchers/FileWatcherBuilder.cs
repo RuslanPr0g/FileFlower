@@ -20,6 +20,7 @@ public class FileWatcherBuilder
 
     public FileWatcherBuilder(string path, ILogger<FileWatcher> logger)
     {
+        Console.WriteLine($"Working with path: ${path}, while current path is {Environment.CurrentDirectory}");
         _path = path;
         _logger = logger;
     }

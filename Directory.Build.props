@@ -16,7 +16,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!-- <ItemGroup>
     <None Include="logo.png" Pack="true" PackagePath="\public\" />
-  </ItemGroup>
+  </ItemGroup> -->
 </Project>

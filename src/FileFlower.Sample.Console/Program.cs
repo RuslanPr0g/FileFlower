@@ -9,3 +9,7 @@ var fileWatcher = new FileWatcherBuilder("~/files")
     .Start();
 
 static async Task Log(FileInfo file) => Console.WriteLine($"called FOR FILE WATCHER subscription!! {file.FullName}");
+
+Console.WriteLine("Please wait for file changes in: " + currentDirectory);
+
+Console.ReadLine();
