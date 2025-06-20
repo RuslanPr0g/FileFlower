@@ -19,16 +19,16 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 8.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore FileFlower.sln
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build FileFlower.sln --no-restore --configuration Release
 
       - name: Test
-        run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
+        run: dotnet test FileFlower.sln --no-build --configuration Release --collect:"XPlat Code Coverage"
 
       - name: Publish code coverage (optional)
         if: success() && github.event_name != 'pull_request'
