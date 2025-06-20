@@ -22,13 +22,13 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore dependencies
-        run: dotnet restore FileFlower.sln
+        run: dotnet restore src/FileFlower.sln
 
       - name: Build
-        run: dotnet build FileFlower.sln --no-restore --configuration Release
+        run: dotnet build src/FileFlower.sln --no-restore --configuration Release
 
       - name: Test
-        run: dotnet test FileFlower.sln --no-build --configuration Release --collect:"XPlat Code Coverage"
+        run: dotnet test src/FileFlower.sln --no-build --configuration Release --collect:"XPlat Code Coverage"
 
       - name: Publish code coverage (optional)
         if: success() && github.event_name != 'pull_request'
