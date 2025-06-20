@@ -1,6 +1,7 @@
 # FileFlower
 
-[[NuGet] - SOON]
+[![NuGet](https://www.nuget.org/packages/FileFlower.Core)]
+[![NuGet](https://www.nuget.org/packages/FileFlower.DependencyInjection)]
 
 ![image](https://github.com/user-attachments/assets/5f8e42fc-532d-4285-99fe-f3b4aa767e1c)
 
