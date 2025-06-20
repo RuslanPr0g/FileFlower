@@ -1,13 +1,21 @@
+using FileFlower.Core.FileWatchers.Contract;
+using FileFlower.Core.Pipelines;
+using Microsoft.Extensions.Logging;
+
 namespace FileFlower.Core.FileWatchers;
 
-internal sealed class FileWatcher : IFileWatcher, IDisposable
+public sealed class FileWatcher : IFileWatcher, IDisposable
 {
     private readonly FileSystemWatcher _watcher;
     private readonly IEnumerable<IFileFilter> _filters;
     private readonly FileProcessingPipeline _pipeline;
     private readonly ILogger<FileWatcher> _logger;
 
-    public FileWatcher(string path, IEnumerable<IFileFilter> filters, FileProcessingPipeline pipeline, ILogger<FileWatcher> logger)
+    public FileWatcher(
+        string path,
+        IEnumerable<IFileFilter> filters,
+        FileProcessingPipeline pipeline,
+        ILogger<FileWatcher> logger)
     {
         _filters = filters;
         _pipeline = pipeline;
@@ -37,6 +45,7 @@ internal sealed class FileWatcher : IFileWatcher, IDisposable
     public void Start()
     {
         _logger.LogInformation("Starting FileWatcher for path: {Path}", _watcher.Path);
+        _watcher.IncludeSubdirectories = true;
         _watcher.EnableRaisingEvents = true;
     }
 

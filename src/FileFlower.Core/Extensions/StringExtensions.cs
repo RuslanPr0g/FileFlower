@@ -1,12 +1,14 @@
+﻿using System.Text.RegularExpressions;
+
 namespace FileFlower.Core.Extensions;
 
 internal static class StringExtensions
 {
     public static bool Like(this string fileName, string pattern)
     {
-        var regex = "^" + System.Text.RegularExpressions.Regex.Escape(pattern)
+        var regex = "^" + Regex.Escape(pattern)
             .Replace("\\*", ".*")
             .Replace("\\?", ".") + "$";
-        return System.Text.RegularExpressions.Regex.IsMatch(fileName, regex, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        return Regex.IsMatch(fileName, regex, RegexOptions.IgnoreCase);
     }
 }

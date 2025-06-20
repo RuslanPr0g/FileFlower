@@ -1,6 +1,8 @@
+using FileFlower.Core.FileWatchers.Contract;
+
 namespace FileFlower.Core.Pipelines;
 
-internal class FileProcessingPipeline(IEnumerable<IFileProcessingStep> steps)
+public class FileProcessingPipeline(IEnumerable<IFileProcessingStep> steps)
 {
     private readonly IEnumerable<IFileProcessingStep> _steps = steps;
 

@@ -1,3 +1,5 @@
+using FileFlower.Core.FileWatchers;
+
 namespace FileFlower.Core.Extensions;
 
 public static class FileWatcherBuilderExtensions

@@ -1,3 +1,5 @@
+using FileFlower.Core.FileWatchers.Contract;
+
 namespace FileFlower.Core.FileWatchers;
 
 internal class DelegateProcessingStep(Func<FileInfo, Task> handler) : IFileProcessingStep

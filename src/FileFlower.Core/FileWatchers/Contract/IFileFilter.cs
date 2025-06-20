@@ -1,6 +1,6 @@
-namespace FileFlower.Core.FileWatchers.Contracts;
+namespace FileFlower.Core.FileWatchers.Contract;
 
-internal interface IFileFilter
+public interface IFileFilter
 {
     bool Matches(FileInfo file);
 }

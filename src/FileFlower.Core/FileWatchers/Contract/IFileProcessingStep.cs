@@ -1,4 +1,4 @@
-namespace FileFlower.Core.FileWatchers.Interfaces;
+namespace FileFlower.Core.FileWatchers.Contract;
 
 public interface IFileProcessingStep
 {
