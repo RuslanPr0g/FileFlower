@@ -2,6 +2,8 @@
 
 [[NuGet] - SOON]
 
+![image](https://github.com/user-attachments/assets/5f8e42fc-532d-4285-99fe-f3b4aa767e1c)
+
 ## Overview
 
 **FileFlow** is a lightweight, flexible .NET library that enables **event-driven, pipeline-based processing of file system changes**. Designed for building modular workflows around directory watching, FileFlow lets you:
