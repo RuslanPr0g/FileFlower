@@ -21,6 +21,12 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         _pipeline = pipeline;
         _logger = logger;
 
+        if (!Directory.Exists(path))
+        {
+            _logger.LogWarning("Directory '{Path}' does not exist. Creating it.", path);
+            Directory.CreateDirectory(path);
+        }
+
         _watcher = new FileSystemWatcher(path)
         {
             IncludeSubdirectories = true,

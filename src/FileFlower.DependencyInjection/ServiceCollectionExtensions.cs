@@ -21,4 +21,10 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+
+    public static IServiceCollection AddFileWatcherHostedService(this IServiceCollection services)
+    {
+        services.AddHostedService<FileWatcherHostedService>();
+        return services;
+    }
 }
