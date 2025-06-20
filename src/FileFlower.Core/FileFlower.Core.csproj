@@ -14,5 +14,7 @@
 
     <ItemGroup>
         <None Include="README.md" Pack="true" PackagePath="\"/>
+        <None Include="CHANGELOG.md" Pack="true" PackagePath="\"/>
+        <None Include="logo.png" Pack="true" PackagePath="\..\..\public\" />
     </ItemGroup>
 </Project>
