@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>FileFlower.DependencyInjection</PackageId>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,4 +18,7 @@
         <ProjectReference Include="..\FileFlower.Core\FileFlower.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
 </Project>
