@@ -5,7 +5,7 @@
 [![FileFlower.Core](https://img.shields.io/nuget/v/FileFlower.Core)](https://www.nuget.org/packages/FileFlower.Core)  
 [![FileFlower.DependencyInjection](https://img.shields.io/nuget/v/FileFlower.DependencyInjection)](https://www.nuget.org/packages/FileFlower.DependencyInjection)
 
-![image](https://github.com/user-attachments/assets/5f8e42fc-532d-4285-99fe-f3b4aa767e1c)
+![image](https://github.com/user-attachments/assets/b85601f0-b82b-4bde-b737-e334e98f0a58)
 
 ## Overview
 
