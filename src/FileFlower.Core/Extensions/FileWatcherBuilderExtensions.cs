@@ -1,3 +1,5 @@
+using FileFlower.Core.Rules;
+
 namespace FileFlower.Core.Extensions;
 
 /// <summary>

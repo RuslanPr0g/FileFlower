@@ -4,7 +4,7 @@ using FileFlower.Core.Loggers;
 using FileFlower.Core.Pipelines;
 using Microsoft.Extensions.Logging;
 
-namespace FileFlower.Core;
+namespace FileFlower.Core.Rules;
 
 /// <summary>
 /// Builds and configures <see cref="ProcessingRule"/> instances,

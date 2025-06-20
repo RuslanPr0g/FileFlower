@@ -1,7 +1,7 @@
 ﻿using FileFlower.Core.FileWatchers.Contract;
 using FileFlower.Core.Pipelines;
 
-namespace FileFlower.Core;
+namespace FileFlower.Core.Rules;
 
 /// <summary>
 /// Specifies logical conditions used to combine multiple file filters in a processing rule.

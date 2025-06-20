@@ -6,6 +6,12 @@ This project follows [Semantic Versioning (SemVer)](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.1-alpha.6] - 2025-06-20
+
+### Added
+
+- Updated namespaces
+
 ## [0.0.1-alpha.5] - 2025-06-20
 
 ### Added

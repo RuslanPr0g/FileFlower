@@ -1,4 +1,5 @@
 using FileFlower.Core.FileWatchers.Contract;
+using FileFlower.Core.Rules;
 using Microsoft.Extensions.Logging;
 
 namespace FileFlower.Core.FileWatchers;
