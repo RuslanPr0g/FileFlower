@@ -1,4 +1,7 @@
-﻿using var watcher = new FileSystemWatcher(@"./files/");
+﻿string currentDirectory = Environment.CurrentDirectory;
+Console.WriteLine("Current directory: " + currentDirectory);
+
+using var watcher = new FileSystemWatcher(@"./files/");
 
 watcher.NotifyFilter = NotifyFilters.Attributes
                      | NotifyFilters.CreationTime
