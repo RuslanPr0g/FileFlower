@@ -64,3 +64,12 @@ static void PrintException(Exception? ex)
         PrintException(ex.InnerException);
     }
 }
+
+// new func *****
+
+var watcher = new FileWatcherBuilder("~/files")
+    .Filter("*.txt")
+    .AddStep(Log)
+    .Start();
+
+static void Log() => Console.WriteLine("called form FILE WATCHER!!");
