@@ -17,3 +17,4 @@ branch="$2"
 git add .
 git commit -a -m "$msg"
 git push origin "$branch"
+clear
