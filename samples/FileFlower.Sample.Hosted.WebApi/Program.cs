@@ -12,6 +12,13 @@ builder.Services.AddFileWatcher(@"./incoming/", watcher =>
                return Task.CompletedTask;
            });
 
+    watcher.WhenResourceChanged(rule => rule.Filter("*.txt"))
+           .AddStep(file =>
+           {
+               Console.WriteLine($"CLIENT | Processed txt or csv (changed): {file.FullName}");
+               return Task.CompletedTask;
+           });
+
     watcher.WhenResourceCreated(rule => rule.Filter("*test*").Filter("*.bat"))
            .AddStep(file =>
            {

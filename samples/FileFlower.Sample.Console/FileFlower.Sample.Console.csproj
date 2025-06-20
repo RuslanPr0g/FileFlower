@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FileFlower.Core\FileFlower.Core.csproj" />
+      <PackageReference Include="FileFlower.Core" Version="0.0.1-alpha.3" />
     </ItemGroup>
 
 </Project>
