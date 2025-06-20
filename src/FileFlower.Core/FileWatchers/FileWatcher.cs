@@ -3,12 +3,23 @@ using Microsoft.Extensions.Logging;
 
 namespace FileFlower.Core.FileWatchers;
 
+/// <summary>
+/// Watches a directory (and optionally its subdirectories) for file system changes,
+/// and dispatches file events to configured processing rules.
+/// </summary>
 public sealed class FileWatcher : IFileWatcher, IDisposable
 {
     private readonly FileSystemWatcher _watcher;
     private readonly List<ProcessingRule> _rules;
     private readonly ILogger _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FileWatcher"/> class that monitors the specified <paramref name="path"/>
+    /// and applies the given processing <paramref name="rules"/>.
+    /// </summary>
+    /// <param name="path">The directory path to watch.</param>
+    /// <param name="rules">A collection of processing rules to apply on file events.</param>
+    /// <param name="logger">An <see cref="ILogger"/> instance for logging.</param>
     public FileWatcher(
         string path,
         List<ProcessingRule> rules,
@@ -44,6 +55,9 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         _watcher.Error += OnError;
     }
 
+    /// <summary>
+    /// Starts the file watcher, enabling it to monitor file changes and raise events accordingly.
+    /// </summary>
     public void Start()
     {
         _logger.LogInformation("Starting FileWatcher for path: {Path}", _watcher.Path);
@@ -123,6 +137,9 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         }
     }
 
+    /// <summary>
+    /// Releases all resources used by the <see cref="FileWatcher"/> instance.
+    /// </summary>
     public void Dispose()
     {
         _watcher.EnableRaisingEvents = false;

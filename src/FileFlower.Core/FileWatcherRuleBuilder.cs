@@ -6,6 +6,10 @@ using Microsoft.Extensions.Logging;
 
 namespace FileFlower.Core;
 
+/// <summary>
+/// Builds and configures <see cref="ProcessingRule"/> instances,
+/// allowing fluent addition of filters, steps, and logical conditions.
+/// </summary>
 public sealed class FileWatcherRuleBuilder
 {
     private readonly List<IFileFilter> _filters = [];
@@ -15,16 +19,30 @@ public sealed class FileWatcherRuleBuilder
 
     private readonly ILogger _logger;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="FileWatcherRuleBuilder"/>
+    /// with the specified <paramref name="logger"/> for diagnostics.
+    /// </summary>
+    /// <param name="logger">The logger to use for warnings and informational messages.</param>
     public FileWatcherRuleBuilder(ILogger logger)
     {
         _logger = logger;
     }
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="FileWatcherRuleBuilder"/>
+    /// with a default console logger.
+    /// </summary>
     public FileWatcherRuleBuilder()
     {
         _logger = ConsoleLogger.Create();
     }
 
+    /// <summary>
+    /// Adds a file name filter pattern to the rule.
+    /// </summary>
+    /// <param name="pattern">The glob-style pattern to match file names (e.g., "*.txt").</param>
+    /// <returns>The current <see cref="FileWatcherRuleBuilder"/> instance for chaining.</returns>
     public FileWatcherRuleBuilder Filter(string pattern)
     {
         var filter = new FileFilter(pattern);
@@ -33,8 +51,9 @@ public sealed class FileWatcherRuleBuilder
     }
 
     /// <summary>
-    /// Switch filter logic to OR
+    /// Sets the filter combination logic to logical OR.
     /// </summary>
+    /// <returns>The current <see cref="FileWatcherRuleBuilder"/> instance for chaining.</returns>
     public FileWatcherRuleBuilder UseOrLogic()
     {
         _useAndLogic = ProcessingRuleCondition.Or;
@@ -42,14 +61,20 @@ public sealed class FileWatcherRuleBuilder
     }
 
     /// <summary>
-    /// Switch filter logic to AND (default)
+    /// Sets the filter combination logic to logical AND (default).
     /// </summary>
+    /// <returns>The current <see cref="FileWatcherRuleBuilder"/> instance for chaining.</returns>
     public FileWatcherRuleBuilder UseAndLogic()
     {
         _useAndLogic = ProcessingRuleCondition.And;
         return this;
     }
 
+    /// <summary>
+    /// Adds an asynchronous processing step to the rule's pipeline.
+    /// </summary>
+    /// <param name="step">The asynchronous step to execute on matching files.</param>
+    /// <returns>The current <see cref="FileWatcherRuleBuilder"/> instance for chaining.</returns>
     public FileWatcherRuleBuilder AddStep(Func<FileInfo, Task> step)
     {
         _pipeline.AddStep(step);
