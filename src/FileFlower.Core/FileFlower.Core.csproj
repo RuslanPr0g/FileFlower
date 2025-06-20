@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <PackageId>FileFlower.Core</PackageId>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>logo.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>

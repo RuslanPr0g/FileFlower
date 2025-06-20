@@ -6,6 +6,12 @@ This project follows [Semantic Versioning (SemVer)](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.1-alpha.3] - 2025-06-20
+
+### Added
+
+- Nuget Image
+
 ## [0.0.1-alpha.2] - 2025-06-20
 
 ### Added

@@ -23,6 +23,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileFlower.Sample.Hosted.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileFlower.Sample.Console", "FileFlower.Sample.Console\FileFlower.Sample.Console.csproj", "{E0D927BD-CE7E-431C-90F5-78C68B183A26}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "package", "package", "{174318F7-F644-43F8-BD8B-14B4DCBB743C}"
+	ProjectSection(SolutionItems) = preProject
+		FileFlower.Core\CHANGELOG.md = FileFlower.Core\CHANGELOG.md
+		FileFlower.DependencyInjection\CHANGELOG.md = FileFlower.DependencyInjection\CHANGELOG.md
+		..\Directory.Build.props = ..\Directory.Build.props
+		..\Directory.Build.targets = ..\Directory.Build.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
