@@ -6,14 +6,14 @@
 
 ## Overview
 
-**FileFlow** is a lightweight, flexible .NET library that enables **event-driven, pipeline-based processing of file system changes**. Designed for building modular workflows around directory watching, FileFlow lets you:
+**FileFlower** is a lightweight, flexible .NET library that enables **event-driven, pipeline-based processing of file system changes**. Designed for building modular workflows around directory watching, FileFlower lets you:
 
 - React to file creation, modification, deletion events
 - Filter and route files by patterns and extensions
 - Define processing pipelines with pre- and post-steps
 - Easily chain multiple processors in a clean, reusable way
 
-FileFlow is ideal for building file ingestion services, automated workflows, and data pipelines that work with file systems in a reactive and maintainable manner.
+FileFlower is ideal for building file ingestion services, automated workflows, and data pipelines that work with file systems in a reactive and maintainable manner.
 
 ---
 
