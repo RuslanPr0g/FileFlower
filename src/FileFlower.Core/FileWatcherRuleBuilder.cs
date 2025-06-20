@@ -11,6 +11,7 @@ public sealed class FileWatcherRuleBuilder
     private readonly List<IFileFilter> _filters = [];
     private readonly FileProcessingPipeline _pipeline = new();
     private ProcessingRuleCondition _useAndLogic = ProcessingRuleCondition.And;
+    private ProcessingRuleOperation _operation = ProcessingRuleOperation.NotSpecified;
 
     private readonly ILogger _logger;
 
@@ -55,6 +56,32 @@ public sealed class FileWatcherRuleBuilder
         return this;
     }
 
+    internal ProcessingRule BuildWithOperationCreated()
+    {
+        return Build(ProcessingRuleOperation.Created);
+    }
+
+    internal ProcessingRule BuildWithOperationChanged()
+    {
+        return Build(ProcessingRuleOperation.Changed);
+    }
+
+    internal ProcessingRule BuildWithOperationDeleted()
+    {
+        return Build(ProcessingRuleOperation.Deleted);
+    }
+
+    internal ProcessingRule BuildWithOperationRenamed()
+    {
+        return Build(ProcessingRuleOperation.Renamed);
+    }
+
+    internal ProcessingRule Build(ProcessingRuleOperation operation)
+    {
+        _operation = operation;
+        return Build();
+    }
+
     internal ProcessingRule Build()
     {
         if (_filters.Count == 0)
@@ -72,6 +99,7 @@ public sealed class FileWatcherRuleBuilder
             Filters = [.. _filters],
             Pipeline = _pipeline,
             Condition = _useAndLogic,
+            Operation = _operation,
         };
     }
 }

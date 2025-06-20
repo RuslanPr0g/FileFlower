@@ -4,11 +4,11 @@ namespace FileFlower.Core.Extensions;
 
 public static class FileWatcherRuleBuilderExtensions
 {
-    public static FileWatcherBuilder WithOrLogic(
+    public static FileWatcherRuleBuilder WithOrLogic(
         this FileWatcherRuleBuilder builder)
-        => builder.WithOrLogic();
+        => builder.UseOrLogic();
 
-    public static FileWatcherBuilder WithAndLogic(
+    public static FileWatcherRuleBuilder WithAndLogic(
         this FileWatcherRuleBuilder builder)
-        => builder.WithAndLogic();
+        => builder.UseAndLogic();
 }

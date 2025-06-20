@@ -27,7 +27,31 @@ public class FileWatcherBuilder
     {
         var ruleBuilder = new FileWatcherRuleBuilder(_logger);
         configure(ruleBuilder);
-        _rules.Add(ruleBuilder.Build());
+        _rules.Add(ruleBuilder.BuildWithOperationCreated());
+        return ruleBuilder;
+    }
+
+    public FileWatcherRuleBuilder WhenResourceChanged(Action<FileWatcherRuleBuilder> configure)
+    {
+        var ruleBuilder = new FileWatcherRuleBuilder(_logger);
+        configure(ruleBuilder);
+        _rules.Add(ruleBuilder.BuildWithOperationChanged());
+        return ruleBuilder;
+    }
+
+    public FileWatcherRuleBuilder WhenResourceRenamed(Action<FileWatcherRuleBuilder> configure)
+    {
+        var ruleBuilder = new FileWatcherRuleBuilder(_logger);
+        configure(ruleBuilder);
+        _rules.Add(ruleBuilder.BuildWithOperationRenamed());
+        return ruleBuilder;
+    }
+
+    public FileWatcherRuleBuilder WhenResourceDeleted(Action<FileWatcherRuleBuilder> configure)
+    {
+        var ruleBuilder = new FileWatcherRuleBuilder(_logger);
+        configure(ruleBuilder);
+        _rules.Add(ruleBuilder.BuildWithOperationDeleted());
         return ruleBuilder;
     }
 

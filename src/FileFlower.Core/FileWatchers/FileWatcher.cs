@@ -51,38 +51,46 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         _watcher.EnableRaisingEvents = true;
     }
 
+    // TODO: is async void bad here?
+
     private async void OnCreated(object sender, FileSystemEventArgs e)
     {
+        if (e.ChangeType != WatcherChangeTypes.Created)
+            return;
+
         var file = new FileInfo(e.FullPath);
 
-        var processed = await _rules.WhereAsync(_ => _.TryProcessAsync(file));
-
-        if (processed.Any())
-        {
-            _logger.LogInformation("File created: {FilePath}", e.FullPath);
-        }
-        else
-        {
-            _logger.LogDebug("File created but did not match filters: {FilePath}", e.FullPath);
-        }
+        await HandleUpdates(e, (rule) => rule.TryProcessCreatedAsync(file), "created");
     }
 
-    private void OnChanged(object sender, FileSystemEventArgs e)
+    private async void OnChanged(object sender, FileSystemEventArgs e)
     {
         if (e.ChangeType != WatcherChangeTypes.Changed)
             return;
 
-        _logger.LogInformation("File changed: {FilePath}", e.FullPath);
+        var file = new FileInfo(e.FullPath);
+
+        await HandleUpdates(e, (rule) => rule.TryProcessChangedAsync(file), "changed");
     }
 
-    private void OnDeleted(object sender, FileSystemEventArgs e)
+    private async void OnDeleted(object sender, FileSystemEventArgs e)
     {
-        _logger.LogInformation("File deleted: {FilePath}", e.FullPath);
+        if (e.ChangeType != WatcherChangeTypes.Deleted)
+            return;
+
+        var file = new FileInfo(e.FullPath);
+
+        await HandleUpdates(e, (rule) => rule.TryProcessDeletedAsync(file), "deleted");
     }
 
-    private void OnRenamed(object sender, RenamedEventArgs e)
+    private async void OnRenamed(object sender, RenamedEventArgs e)
     {
-        _logger.LogInformation("File renamed from {OldPath} to {NewPath}", e.OldFullPath, e.FullPath);
+        if (e.ChangeType != WatcherChangeTypes.Renamed)
+            return;
+
+        var file = new FileInfo(e.FullPath);
+
+        await HandleUpdates(e, (rule) => rule.TryProcessRenamedAsync(file), "renamed");
     }
 
     private void OnError(object sender, ErrorEventArgs e)
@@ -90,6 +98,29 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         var ex = e.GetException();
         if (ex != null)
             _logger.LogError(ex, "File system watcher error: {Message}", ex.Message);
+    }
+
+    private async Task HandleUpdates(
+        FileSystemEventArgs e,
+        Func<ProcessingRule, Task<bool>> predicate,
+        string updateType = "updated")
+    {
+        var processed = await _rules.WhereAsync(predicate);
+
+        if (processed.Any())
+        {
+            _logger.LogInformation(
+                "File {UpdateType}: {FilePath}",
+                updateType,
+                e.FullPath);
+        }
+        else
+        {
+            _logger.LogDebug(
+                "File {UpdateType} but did not match filters: {FilePath}",
+                updateType,
+                e.FullPath);
+        }
     }
 
     public void Dispose()
