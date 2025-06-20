@@ -7,7 +7,10 @@ builder.Services.AddOpenApi();
 builder.Services.AddFileWatcher(@"./incoming/", watcher =>
 {
     watcher.Filter("*.txt")
-           .AddStep(async file => Console.WriteLine($"Processed: {file.FullName}"));
+           .AddStep(async file =>
+           {
+               Console.WriteLine($"Processed: {file.FullName}");
+           });
 }).AddFileWatcherHostedService();
 
 var app = builder.Build();
