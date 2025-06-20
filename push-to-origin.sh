@@ -15,5 +15,5 @@ msg="$1"
 branch="$2"
 
 git add .
-git commit -m "$msg"
+git commit -a -m "$msg"
 git push origin "$branch"
