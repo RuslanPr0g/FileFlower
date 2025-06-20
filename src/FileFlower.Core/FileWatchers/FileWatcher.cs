@@ -1,5 +1,4 @@
 using FileFlower.Core.FileWatchers.Contract;
-using FileFlower.Core.Pipelines;
 using Microsoft.Extensions.Logging;
 
 namespace FileFlower.Core.FileWatchers;
@@ -7,18 +6,15 @@ namespace FileFlower.Core.FileWatchers;
 public sealed class FileWatcher : IFileWatcher, IDisposable
 {
     private readonly FileSystemWatcher _watcher;
-    private readonly IEnumerable<IFileFilter> _filters;
-    private readonly FileProcessingPipeline _pipeline;
-    private readonly ILogger<FileWatcher> _logger;
+    private readonly List<ProcessingRule> _rules;
+    private readonly ILogger _logger;
 
     public FileWatcher(
         string path,
-        IEnumerable<IFileFilter> filters,
-        FileProcessingPipeline pipeline,
-        ILogger<FileWatcher> logger)
+        List<ProcessingRule> rules,
+        ILogger logger)
     {
-        _filters = filters;
-        _pipeline = pipeline;
+        _rules = rules;
         _logger = logger;
 
         if (!Directory.Exists(path))
@@ -58,10 +54,12 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
     private async void OnCreated(object sender, FileSystemEventArgs e)
     {
         var file = new FileInfo(e.FullPath);
-        if (_filters.All(f => f.Matches(file)))
+
+        var processed = await _rules.WhereAsync(_ => _.TryProcessAsync(file));
+
+        if (processed.Any())
         {
             _logger.LogInformation("File created: {FilePath}", e.FullPath);
-            await _pipeline.ExecuteAsync(file);
         }
         else
         {
@@ -96,6 +94,7 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
 
     public void Dispose()
     {
+        _watcher.EnableRaisingEvents = false;
         _logger.LogInformation("Disposing FileWatcher for path: {Path}", _watcher.Path);
         _watcher.Dispose();
     }

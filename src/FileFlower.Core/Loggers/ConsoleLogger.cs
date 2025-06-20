@@ -2,9 +2,9 @@ using Microsoft.Extensions.Logging;
 
 namespace FileFlower.Core.Loggers;
 
-internal class ConsoleLogger<T> : ILogger<T>
+internal class ConsoleLogger : ILogger
 {
-    internal static ConsoleLogger<T> Create() => new();
+    internal static ConsoleLogger Create() => new();
 
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
     {

@@ -1,13 +1,21 @@
+using FileFlower.Core.Extensions;
 using FileFlower.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddFileWatcher(@"./incoming/", watcher =>
 {
-    watcher.Filter("*.txt")
+    watcher.WhenResourceCreated(rule => rule.Filter("*.txt").Filter("*.csv").WithOrLogic())
            .AddStep(file =>
            {
-               Console.WriteLine($"Processed: {file.FullName}");
+               Console.WriteLine($"CLIENT | Processed txt or csv: {file.FullName}");
+               return Task.CompletedTask;
+           });
+
+    watcher.WhenResourceCreated(rule => rule.Filter("*.log"))
+           .AddStep(file =>
+           {
+               Console.WriteLine($"CLIENT | Processed log: {file.FullName}");
                return Task.CompletedTask;
            });
 }).AddFileWatcherHostedService();

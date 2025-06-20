@@ -2,19 +2,13 @@ using FileFlower.Core.FileWatchers;
 
 namespace FileFlower.Core.Extensions;
 
-public static class FileWatcherBuilderExtensions
+public static class FileWatcherRuleBuilderExtensions
 {
-    public static FileWatcherBuilder FilterByExtension(
-        this FileWatcherBuilder builder,
-        string extension)
-        => builder.Filter($"*.{extension.TrimStart('.')}");
+    public static FileWatcherBuilder WithOrLogic(
+        this FileWatcherRuleBuilder builder)
+        => builder.WithOrLogic();
 
-    public static FileWatcherBuilder FilterMultiple(
-        this FileWatcherBuilder builder,
-        params string[] patterns)
-    {
-        foreach (var pattern in patterns)
-            builder.Filter(pattern);
-        return builder;
-    }
+    public static FileWatcherBuilder WithAndLogic(
+        this FileWatcherRuleBuilder builder)
+        => builder.WithAndLogic();
 }

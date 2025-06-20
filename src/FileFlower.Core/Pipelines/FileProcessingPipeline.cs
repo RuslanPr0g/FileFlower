@@ -1,16 +1,19 @@
-using FileFlower.Core.FileWatchers.Contract;
-
 namespace FileFlower.Core.Pipelines;
 
-public class FileProcessingPipeline(IEnumerable<IFileProcessingStep> steps)
+public sealed class FileProcessingPipeline
 {
-    private readonly IEnumerable<IFileProcessingStep> _steps = steps;
+    private readonly List<Func<FileInfo, Task>> _steps = [];
+
+    public void AddStep(Func<FileInfo, Task> step)
+    {
+        _steps.Add(step);
+    }
 
     public async Task ExecuteAsync(FileInfo file)
     {
         foreach (var step in _steps)
         {
-            await step.ExecuteAsync(file);
+            await step(file);
         }
     }
 }
