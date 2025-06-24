@@ -75,7 +75,7 @@ public sealed class FileWatcherRuleBuilder
     /// </summary>
     /// <param name="step">The asynchronous step to execute on matching files.</param>
     /// <returns>The current <see cref="FileWatcherRuleBuilder"/> instance for chaining.</returns>
-    public FileWatcherRuleBuilder AddStep(Func<FileInfo, Task> step)
+    public FileWatcherRuleBuilder AddStep(DelegateProcessingStep step)
     {
         _pipeline.AddStep(step);
         return this;

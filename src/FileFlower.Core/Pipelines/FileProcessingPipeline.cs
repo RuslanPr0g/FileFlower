@@ -1,3 +1,5 @@
+using FileFlower.Core.FileWatchers.Contract;
+
 namespace FileFlower.Core.Pipelines;
 
 /// <summary>
@@ -6,13 +8,13 @@ namespace FileFlower.Core.Pipelines;
 /// </summary>
 public sealed class FileProcessingPipeline
 {
-    private readonly List<Func<FileInfo, Task>> _steps = [];
+    private readonly List<IFileProcessingStep> _steps = [];
 
     /// <summary>
     /// Adds a new asynchronous processing step to the pipeline.
     /// </summary>
     /// <param name="step">The asynchronous function that processes a <see cref="FileInfo"/>.</param>
-    public void AddStep(Func<FileInfo, Task> step)
+    public void AddStep(IFileProcessingStep step)
     {
         _steps.Add(step);
     }
@@ -26,7 +28,7 @@ public sealed class FileProcessingPipeline
     {
         foreach (var step in _steps)
         {
-            await step(file);
+            await step.ExecuteAsync(file);
         }
     }
 }

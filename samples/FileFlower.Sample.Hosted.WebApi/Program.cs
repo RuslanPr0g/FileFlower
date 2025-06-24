@@ -3,6 +3,11 @@ using FileFlower.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// builder.Services.AddFileWatchers(configuration =>
+// {
+//      configuration.ForDirectory("./test/", ...)
+// });
+
 builder.Services.AddFileWatcher(@"./incoming/", watcher =>
 {
     watcher.WhenResourceCreated(rule => rule.Filter("*.txt").Filter("*.csv").WithOrLogic())
