@@ -22,6 +22,7 @@ public class FileWatcherBuilder
     /// <param name="path">The directory path to monitor for file system changes.</param>
     public FileWatcherBuilder(string path)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(path);
         _path = path;
         _logger = ConsoleLogger.Create();
     }
@@ -35,7 +36,7 @@ public class FileWatcherBuilder
     /// <param name="logger">The logger to use for diagnostic messages.</param>
     public FileWatcherBuilder(string path, ILogger logger)
     {
-        Console.WriteLine($"Working with path: ${path}, while current path is {Environment.CurrentDirectory}");
+        ArgumentException.ThrowIfNullOrWhiteSpace(path);
         _path = path;
         _logger = logger;
     }

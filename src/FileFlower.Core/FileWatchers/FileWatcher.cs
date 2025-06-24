@@ -125,16 +125,18 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         if (processed.Any())
         {
             _logger.LogInformation(
-                "File {UpdateType}: {FilePath}",
+                "File {UpdateType}: {FilePath}, under {Directory}",
                 updateType,
-                e.FullPath);
+                e.FullPath,
+                _watcher.Path);
         }
         else
         {
             _logger.LogDebug(
-                "File {UpdateType} but did not match filters: {FilePath}",
+                "File {UpdateType} but did not match filters: {FilePath}, under {Directory}",
                 updateType,
-                e.FullPath);
+                e.FullPath,
+                _watcher.Path);
         }
     }
 

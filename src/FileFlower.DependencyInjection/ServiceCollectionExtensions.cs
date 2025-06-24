@@ -23,6 +23,8 @@ public static class ServiceCollectionExtensions
         string path,
         Action<FileWatcherBuilder> configure)
     {
+        ArgumentNullException.ThrowIfNull(configure);
+
         services.AddSingleton(provider =>
         {
             var logger = provider.GetRequiredService<ILogger<FileWatcher>>();
@@ -30,6 +32,34 @@ public static class ServiceCollectionExtensions
             configure(builder);
             return builder.Build();
         });
+
+        return services;
+    }
+
+    /// <summary>
+    /// Registers multiple <see cref="FileWatcher"/> instances configured for the specified directory path
+    /// and configuration action, as a singleton service.
+    /// </summary>
+    /// <param name="services">The service collection to add to.</param>
+    /// <param name="configure">An action to configure the <see cref="FileWatcherBuilderCompositor"/>.</param>
+    /// <returns>The updated <see cref="IServiceCollection"/> instance for chaining.</returns>
+    public static IServiceCollection AddFileWatchers(
+        this IServiceCollection services,
+        Action<FileWatcherBuilderCompositor> configure)
+    {
+        ArgumentNullException.ThrowIfNull(configure);
+
+        var serviceProvider = services.BuildServiceProvider();
+        var logger = serviceProvider.GetRequiredService<ILogger<FileWatcher>>();
+
+        var builder = new FileWatcherBuilderCompositor(logger);
+        configure(builder);
+        var composedFileWatchers = builder.Compose();
+
+        foreach (var watcher in composedFileWatchers)
+        {
+            services.AddSingleton(watcher);
+        }
 
         return services;
     }
