@@ -26,28 +26,32 @@ FileFlower is ideal for building file ingestion services, automated workflows, a
 ## Getting Started
 
 ```csharp
-var watcher = new FileWatcherBuilder("~/files");
+builder.Services.AddFileWatchers(configuration =>
+{
+    configuration.ForDirectory("./incoming/", watcher =>
+    {
+        watcher.WhenResourceCreated(rule => rule.Filter("*.txt").Filter("*.csv").WithOrLogic())
+               .AddStep(async context =>
+               {
+                   Console.WriteLine($"CLIENT | Processed txt or csv: {context.FileInfo.FullName}");
+               });
+    });
 
-watcher.WhenResourceCreated(rule => rule.Filter("*.txt").Filter("*.csv").WithOrLogic())
-       .AddStep(file =>
-       {
-           Console.WriteLine($"CLIENT | Processed txt or csv: {file.FullName}");
-           return Task.CompletedTask;
-       });
+    configuration.ForDirectory("./incoming_v2/", watcher =>
+    {
+        watcher.WhenResourceCreated(rule => rule.Filter("*.txt").Filter("*.csv").WithOrLogic())
+               .AddStep(async context =>
+               {
+                   Console.WriteLine($"CLIENT | Processed txt or csv: {context.FileInfo.FullName}");
+               });
 
-watcher.WhenResourceCreated(rule => rule.Filter("*test*").Filter("*.bat"))
-       .AddStep(file =>
-       {
-           Console.WriteLine($"CLIENT | Processed bat which contains word 'test': {file.FullName}");
-           return Task.CompletedTask;
-       });
-
-watcher.WhenResourceCreated(rule => rule.Filter("*.log"))
-       .AddStep(file =>
-       {
-           Console.WriteLine($"CLIENT | Processed log: {file.FullName}");
-           return Task.CompletedTask;
-       });
+        watcher.WhenResourceDeleted(rule => rule.Filter("*.txt"))
+               .AddStep(async context =>
+               {
+                   Console.WriteLine($"CLIENT | Processed txt or csv (deleted): {context.FileInfo.FullName}");
+               });
+    });
+}).AddFileWatcherHostedService();
 ```
 
 ---
