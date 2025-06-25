@@ -25,7 +25,6 @@ FileFlower is ideal for building file ingestion services, automated workflows, a
 - Monitor directories and subdirectories for file changes
 - Filter files by pattern, extension, or custom rules
 - Define composable pipeline steps for processing files
-- Support for error handling, retries, and archiving
 - Minimal dependencies, cross-platform (.NET 8+)
 
 ---
