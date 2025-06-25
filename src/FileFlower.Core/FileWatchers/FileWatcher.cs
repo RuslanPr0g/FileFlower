@@ -83,7 +83,7 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
             return;
 
         var context = GetFileContext(e, FileModificationType.Changed);
-        await HandleUpdates(e, (rule) => rule.TryProcessChangedAsync(context), context.FileModificationType);
+        await HandleUpdates(e, (rule) => rule.TryProcessAsync(context), context.FileModificationType);
     }
 
     private async void OnDeleted(object sender, FileSystemEventArgs e)
@@ -92,7 +92,7 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
             return;
 
         var context = GetFileContext(e, FileModificationType.Deleted);
-        await HandleUpdates(e, (rule) => rule.TryProcessDeletedAsync(context), context.FileModificationType);
+        await HandleUpdates(e, (rule) => rule.TryProcessAsync(context), context.FileModificationType);
     }
 
     private async void OnRenamed(object sender, RenamedEventArgs e)
@@ -101,7 +101,7 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
             return;
 
         var context = GetFileContext(e, FileModificationType.Renamed);
-        await HandleUpdates(e, (rule) => rule.TryProcessRenamedAsync(context), context.FileModificationType);
+        await HandleUpdates(e, (rule) => rule.TryProcessAsync(context), context.FileModificationType);
     }
 
     private void OnError(object sender, ErrorEventArgs e)
