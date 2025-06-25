@@ -9,60 +9,53 @@ builder.Services.AddFileWatchers(configuration =>
     configuration.ForDirectory("./incoming/", watcher =>
     {
         watcher.WhenResourceCreated(rule => rule.Filter("*.txt").Filter("*.csv").WithOrLogic())
-               .AddStep(file =>
+               .AddStep(async context =>
                {
-                   Console.WriteLine($"CLIENT | Processed txt or csv: {file.FullName}");
-                   return Task.CompletedTask;
+                   Console.WriteLine($"CLIENT | Processed txt or csv: {context.FileInfo.FullName}");
                });
     });
 
     configuration.ForDirectory("./incoming_v2/", watcher =>
     {
         watcher.WhenResourceCreated(rule => rule.Filter("*.txt").Filter("*.csv").WithOrLogic())
-               .AddStep(file =>
+               .AddStep(async context =>
                {
-                   Console.WriteLine($"CLIENT | Processed txt or csv: {file.FullName}");
-                   return Task.CompletedTask;
+                   Console.WriteLine($"CLIENT | Processed txt or csv: {context.FileInfo.FullName}");
                });
 
         watcher.WhenResourceDeleted(rule => rule.Filter("*.txt"))
-               .AddStep(file =>
+               .AddStep(async context =>
                {
-                   Console.WriteLine($"CLIENT | Processed txt or csv (deleted): {file.FullName}");
-                   return Task.CompletedTask;
+                   Console.WriteLine($"CLIENT | Processed txt or csv (deleted): {context.FileInfo.FullName}");
                });
     });
 }).AddFileWatcherHostedService();
 
-// ***** OR as a single file watcher per project.
+// ***** OR as a single context watcher per project.
 //builder.Services.AddFileWatcher(@"./incoming/", watcher =>
 //{
 //    watcher.WhenResourceCreated(rule => rule.Filter("*.txt").Filter("*.csv").WithOrLogic())
-//           .AddStep(file =>
+//           .AddStep(async context =>
 //           {
-//               Console.WriteLine($"CLIENT | Processed txt or csv: {file.FullName}");
-//               return Task.CompletedTask;
+//               Console.WriteLine($"CLIENT | Processed txt or csv: {context.FileInfo.FullName}");
 //           });
 
 //    watcher.WhenResourceChanged(rule => rule.Filter("*.txt"))
-//           .AddStep(file =>
+//           .AddStep(async context =>
 //           {
-//               Console.WriteLine($"CLIENT | Processed txt or csv (changed): {file.FullName}");
-//               return Task.CompletedTask;
+//               Console.WriteLine($"CLIENT | Processed txt or csv (changed): {context.FileInfo.FullName}");
 //           });
 
 //    watcher.WhenResourceCreated(rule => rule.Filter("*test*").Filter("*.bat"))
-//           .AddStep(file =>
+//           .AddStep(async context =>
 //           {
-//               Console.WriteLine($"CLIENT | Processed bat which contains word 'test': {file.FullName}");
-//               return Task.CompletedTask;
+//               Console.WriteLine($"CLIENT | Processed bat which contains word 'test': {context.FileInfo.FullName}");
 //           });
 
 //    watcher.WhenResourceCreated(rule => rule.Filter("*.log"))
-//           .AddStep(file =>
+//           .AddStep(async context =>
 //           {
-//               Console.WriteLine($"CLIENT | Processed log: {file.FullName}");
-//               return Task.CompletedTask;
+//               Console.WriteLine($"CLIENT | Processed log: {context.FileInfo.FullName}");
 //           });
 //}).AddFileWatcherHostedService();
 

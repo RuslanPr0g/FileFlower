@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FileFlower.Core" Version="0.0.1-rc.1" />
+      <PackageReference Include="FileFlower.Core" Version="1.0.0" />
     </ItemGroup>
 
 </Project>

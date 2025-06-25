@@ -7,24 +7,21 @@ Console.WriteLine("Current directory: " + currentDirectory);
 var watcher = new FileWatcherBuilder("~/files");
 
 watcher.WhenResourceCreated(rule => rule.Filter("*.txt").Filter("*.csv").WithOrLogic())
-       .AddStep(file =>
+       .AddStep(async context =>
        {
-           Console.WriteLine($"CLIENT | Processed txt or csv: {file.FullName}");
-           return Task.CompletedTask;
+           Console.WriteLine($"CLIENT | Processed txt or csv: {context.FileInfo.FullName}");
        });
 
 watcher.WhenResourceCreated(rule => rule.Filter("*test*").Filter("*.bat"))
-       .AddStep(file =>
+       .AddStep(async context =>
        {
-           Console.WriteLine($"CLIENT | Processed bat which contains word 'test': {file.FullName}");
-           return Task.CompletedTask;
+           Console.WriteLine($"CLIENT | Processed bat which contains word 'test': {context.FileInfo.FullName}");
        });
 
 watcher.WhenResourceCreated(rule => rule.Filter("*.log"))
-       .AddStep(file =>
+       .AddStep(async context =>
        {
-           Console.WriteLine($"CLIENT | Processed log: {file.FullName}");
-           return Task.CompletedTask;
+           Console.WriteLine($"CLIENT | Processed log: {context.FileInfo.FullName}");
        });
 
 Console.WriteLine("Please wait for file changes in: " + currentDirectory);
