@@ -1,4 +1,4 @@
-using FileFlower.Core.FileWatchers.Contract;
+using FileFlower.Core.Abstractions;
 using FileFlower.Core.Rules;
 using Microsoft.Extensions.Logging;
 
@@ -73,9 +73,8 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         if (e.ChangeType != WatcherChangeTypes.Created)
             return;
 
-        var file = new FileInfo(e.FullPath);
-
-        await HandleUpdates(e, (rule) => rule.TryProcessCreatedAsync(file), "created");
+        var context = GetFileContext(e, FileModificationType.Created);
+        await HandleUpdates(e, (rule) => rule.TryProcessAsync(context), context.FileModificationType);
     }
 
     private async void OnChanged(object sender, FileSystemEventArgs e)
@@ -83,9 +82,8 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         if (e.ChangeType != WatcherChangeTypes.Changed)
             return;
 
-        var file = new FileInfo(e.FullPath);
-
-        await HandleUpdates(e, (rule) => rule.TryProcessChangedAsync(file), "changed");
+        var context = GetFileContext(e, FileModificationType.Changed);
+        await HandleUpdates(e, (rule) => rule.TryProcessAsync(context), context.FileModificationType);
     }
 
     private async void OnDeleted(object sender, FileSystemEventArgs e)
@@ -93,9 +91,8 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         if (e.ChangeType != WatcherChangeTypes.Deleted)
             return;
 
-        var file = new FileInfo(e.FullPath);
-
-        await HandleUpdates(e, (rule) => rule.TryProcessDeletedAsync(file), "deleted");
+        var context = GetFileContext(e, FileModificationType.Deleted);
+        await HandleUpdates(e, (rule) => rule.TryProcessAsync(context), context.FileModificationType);
     }
 
     private async void OnRenamed(object sender, RenamedEventArgs e)
@@ -103,9 +100,8 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         if (e.ChangeType != WatcherChangeTypes.Renamed)
             return;
 
-        var file = new FileInfo(e.FullPath);
-
-        await HandleUpdates(e, (rule) => rule.TryProcessRenamedAsync(file), "renamed");
+        var context = GetFileContext(e, FileModificationType.Renamed);
+        await HandleUpdates(e, (rule) => rule.TryProcessAsync(context), context.FileModificationType);
     }
 
     private void OnError(object sender, ErrorEventArgs e)
@@ -118,7 +114,7 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
     private async Task HandleUpdates(
         FileSystemEventArgs e,
         Func<ProcessingRule, Task<bool>> predicate,
-        string updateType = "updated")
+        FileModificationType operation = FileModificationType.NotSpecified)
     {
         var processed = await _rules.WhereAsync(predicate);
 
@@ -126,7 +122,7 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         {
             _logger.LogInformation(
                 "File {UpdateType}: {FilePath}, under {Directory}",
-                updateType,
+                operation.ToString(),
                 e.FullPath,
                 _watcher.Path);
         }
@@ -134,10 +130,15 @@ public sealed class FileWatcher : IFileWatcher, IDisposable
         {
             _logger.LogDebug(
                 "File {UpdateType} but did not match filters: {FilePath}, under {Directory}",
-                updateType,
+                operation.ToString(),
                 e.FullPath,
                 _watcher.Path);
         }
+    }
+
+    private static FileContext GetFileContext(FileSystemEventArgs e, FileModificationType operation)
+    {
+        return new(new(e.FullPath), operation);
     }
 
     /// <summary>

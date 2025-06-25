@@ -5,7 +5,7 @@
     <Authors>RuslanPr0g</Authors>
     <Company>FileFlower Contributors</Company>
     <Product>FileFlower</Product>
-    <Version>0.0.1-rc.1</Version>
+    <Version>1.0.0</Version>
     <Description>A flexible event-driven pipeline for file system changes</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/RuslanPr0g/FileFlower</RepositoryUrl>

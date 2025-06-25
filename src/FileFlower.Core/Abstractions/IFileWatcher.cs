@@ -1,4 +1,4 @@
-namespace FileFlower.Core.FileWatchers.Contract;
+namespace FileFlower.Core.Abstractions;
 
 /// <summary>
 /// Defines the contract for a file watcher capable of monitoring a file system location

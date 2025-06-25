@@ -1,4 +1,4 @@
-using FileFlower.Core.FileWatchers.Contract;
+using FileFlower.Core.Abstractions;
 using FileFlower.Core.Loggers;
 using Microsoft.Extensions.Logging;
 

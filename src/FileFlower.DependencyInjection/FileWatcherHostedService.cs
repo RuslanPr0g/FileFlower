@@ -1,4 +1,4 @@
-﻿using FileFlower.Core.FileWatchers.Contract;
+﻿using FileFlower.Core.Abstractions;
 using Microsoft.Extensions.Hosting;
 
 namespace FileFlower.DependencyInjection;
