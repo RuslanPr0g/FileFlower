@@ -1,7 +1,8 @@
-﻿using FileFlower.Core.FileWatchers;
-using FileFlower.Core.FileWatchers.Contract;
+﻿using FileFlower.Core.Abstractions;
+using FileFlower.Core.Filters;
 using FileFlower.Core.Loggers;
 using FileFlower.Core.Pipelines;
+using FileFlower.Core.ProcessingSteps;
 using Microsoft.Extensions.Logging;
 
 namespace FileFlower.Core.Rules;
@@ -15,7 +16,7 @@ public sealed class FileWatcherRuleBuilder
     private readonly List<IFileFilter> _filters = [];
     private readonly FileProcessingPipeline _pipeline = new();
     private ProcessingRuleCondition _useAndLogic = ProcessingRuleCondition.And;
-    private ProcessingRuleOperation _operation = ProcessingRuleOperation.NotSpecified;
+    private FileModificationType _operation = FileModificationType.NotSpecified;
 
     private readonly ILogger _logger;
 
@@ -45,7 +46,18 @@ public sealed class FileWatcherRuleBuilder
     /// <returns>The current <see cref="FileWatcherRuleBuilder"/> instance for chaining.</returns>
     public FileWatcherRuleBuilder Filter(string pattern)
     {
-        var filter = new FileFilter(pattern);
+        Filter(new FileNameFilter(pattern));
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a custom defined filter to the rule.
+    /// </summary>
+    /// <param name="filter">User defined custom filter.</param>
+    /// <returns>The current <see cref="FileWatcherRuleBuilder"/> instance for chaining.</returns>
+    public FileWatcherRuleBuilder Filter<TFileFilter>(TFileFilter filter)
+        where TFileFilter : IFileFilter
+    {
         _filters.Add(filter);
         return this;
     }
@@ -75,33 +87,45 @@ public sealed class FileWatcherRuleBuilder
     /// </summary>
     /// <param name="step">The asynchronous step to execute on matching files.</param>
     /// <returns>The current <see cref="FileWatcherRuleBuilder"/> instance for chaining.</returns>
-    public FileWatcherRuleBuilder AddStep(Func<FileInfo, Task> step)
+    public FileWatcherRuleBuilder AddStep(Func<FileContext, Task> step)
     {
-        _pipeline.AddStep(new DelegateProcessingStep(step));
+        AddStep<DelegateProcessingStep>(new DelegateProcessingStep(step));
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a custom asynchronous processing step to the rule's pipeline.
+    /// </summary>
+    /// <param name="step">The asynchronous step to execute on matching files.</param>
+    /// <returns>The current <see cref="FileWatcherRuleBuilder"/> instance for chaining.</returns>
+    public FileWatcherRuleBuilder AddStep<TFileProcessingStep>(IFileProcessingStep step)
+        where TFileProcessingStep : IFileProcessingStep
+    {
+        _pipeline.AddStep(step);
         return this;
     }
 
     internal ProcessingRule BuildWithOperationCreated()
     {
-        return Build(ProcessingRuleOperation.Created);
+        return Build(FileModificationType.Created);
     }
 
     internal ProcessingRule BuildWithOperationChanged()
     {
-        return Build(ProcessingRuleOperation.Changed);
+        return Build(FileModificationType.Changed);
     }
 
     internal ProcessingRule BuildWithOperationDeleted()
     {
-        return Build(ProcessingRuleOperation.Deleted);
+        return Build(FileModificationType.Deleted);
     }
 
     internal ProcessingRule BuildWithOperationRenamed()
     {
-        return Build(ProcessingRuleOperation.Renamed);
+        return Build(FileModificationType.Renamed);
     }
 
-    internal ProcessingRule Build(ProcessingRuleOperation operation)
+    internal ProcessingRule Build(FileModificationType operation)
     {
         _operation = operation;
         return Build();
